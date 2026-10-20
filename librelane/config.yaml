@@ -1,0 +1,70 @@
+meta:
+  version: 3
+  flow: Chip
+
+DESIGN_NAME: chip_top
+VERILOG_FILES:
+  - dir::../src/chip_top.sv
+  - dir::../src/chip_core.sv
+  - dir::../src/mythcore_test.v
+VERILOG_INCLUDE_DIRS:
+  - dir::../src
+VERILOG_DEFINES: [FUNCTIONAL, USE_POWER_PINS]
+USE_SLANG: true
+SLANG_ARGUMENTS: ['--keep-hierarchy']
+PRIMARY_GDSII_STREAMOUT_TOOL: klayout
+
+# Pad instance names correspond to chip_top.sv generate blocks.
+PAD_SOUTH:
+  - clk_pad
+  - rst_n_pad
+  - "result_pads\\[0\\].result_pad"
+  - "result_pads\\[1\\].result_pad"
+  - "result_pads\\[2\\].result_pad"
+  - "result_pads\\[3\\].result_pad"
+  - "result_pads\\[4\\].result_pad"
+PAD_EAST:
+  - "result_pads\\[5\\].result_pad"
+  - "result_pads\\[6\\].result_pad"
+  - "result_pads\\[7\\].result_pad"
+PAD_NORTH:
+  - "result_pads\\[8\\].result_pad"
+  - "result_pads\\[9\\].result_pad"
+  - vdd_pad
+  - iovdd_pad
+PAD_WEST:
+  - vss_pad
+  - iovss_pad
+
+PNR_SDC_FILE: dir::chip_top.sdc
+SIGNOFF_SDC_FILE: dir::chip_top.sdc
+FALLBACK_SDC: dir::chip_top.sdc
+VDD_NETS: [VDD]
+GND_NETS: [VSS]
+CLOCK_PORT: clk_PAD
+CLOCK_NET: clk_pad/p2c
+CLOCK_PERIOD: 20
+
+# Educational starting floorplan; resize only after reviewing synthesized area/pad ring.
+FP_SIZING: absolute
+DIE_AREA: [0, 0, 1800, 1800]
+CORE_AREA: [350, 350, 1450, 1450]
+PL_TARGET_DENSITY_PCT: 25
+GRT_ALLOW_CONGESTION: true
+
+PDN_CORE_RING: true
+PDN_CORE_RING_CONNECT_TO_PADS: true
+PDN_CORE_RING_VWIDTH: 15
+PDN_CORE_RING_HWIDTH: 15
+PDN_CORE_RING_VSPACING: 5
+PDN_CORE_RING_HSPACING: 5
+PDN_ENABLE_PINS: false
+PDN_CFG: dir::pdn_cfg.tcl
+
+PAD_BONDPAD_NAME: bondpad_70x70_novias
+EXTRA_GDS:
+  - dir::../ip/bondpad_70x70_novias/gds/bondpad_70x70_novias.gds
+EXTRA_LEFS:
+  - dir::../ip/bondpad_70x70_novias/lef/bondpad_70x70_novias.lef
+IGNORE_DISCONNECTED_MODULES: [bondpad_70x70_novias]
+MAGIC_EXT_UNIQUE: notopports
