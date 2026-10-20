@@ -15,13 +15,23 @@ module chip_top (
     wire rst_n_core;
     wire [9:0] result_core;
 
-    sg13g2_IOPadIn clk_pad (
+//    sg13g2_IOPadIn clk_pad (
+//`ifdef USE_POWER_PINS
+//        .iovdd(IOVDD), .iovss(IOVSS), .vdd(VDD), .vss(VSS),
+//`endif
+//        .p2c(clk_core), .pad(clk_PAD)
+//    );
+ 
+sg13g2_IOPadIn clk_pad (
 `ifdef USE_POWER_PINS
-        .iovdd(IOVDD), .iovss(IOVSS), .vdd(VDD), .vss(VSS),
+    .iovdd(IOVDD), .iovss(IOVSS), .vdd(VDD), .vss(VSS),
 `endif
-        .p2c(clk_core), .pad(clk_PAD)
-    );
-    sg13g2_IOPadIn rst_n_pad (
+    .pad(clk_PAD),
+    .p2c(clk_core)
+);
+
+
+   sg13g2_IOPadIn rst_n_pad (
 `ifdef USE_POWER_PINS
         .iovdd(IOVDD), .iovss(IOVSS), .vdd(VDD), .vss(VSS),
 `endif
@@ -37,22 +47,25 @@ module chip_top (
         );
     end
 
-    sg13g2_IOPadIOVdd iovdd_pad (
+(* keep = 1 *)    sg13g2_IOPadIOVdd iovdd_pad (
 `ifdef USE_POWER_PINS
         .iovdd(IOVDD), .iovss(IOVSS), .vdd(VDD), .vss(VSS)
 `endif
     );
-    sg13g2_IOPadIOVss iovss_pad (
+
+(* keep = 1 *)    sg13g2_IOPadIOVss iovss_pad (
 `ifdef USE_POWER_PINS
         .iovdd(IOVDD), .iovss(IOVSS), .vdd(VDD), .vss(VSS)
 `endif
     );
-    sg13g2_IOPadVdd vdd_pad (
+
+(* keep = 1 *)    sg13g2_IOPadVdd vdd_pad (
 `ifdef USE_POWER_PINS
         .iovdd(IOVDD), .iovss(IOVSS), .vdd(VDD), .vss(VSS)
 `endif
     );
-    sg13g2_IOPadVss vss_pad (
+
+(* keep = 1 *)    sg13g2_IOPadVss vss_pad (
 `ifdef USE_POWER_PINS
         .iovdd(IOVDD), .iovss(IOVSS), .vdd(VDD), .vss(VSS)
 `endif
